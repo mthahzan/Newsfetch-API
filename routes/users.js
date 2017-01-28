@@ -5,7 +5,7 @@ const router = express.Router(); // eslint-disable-line
 const models = require('../models');
 
 /* GET users listing. */
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   const options = {
     attributes: {
       exclude: ['password'],

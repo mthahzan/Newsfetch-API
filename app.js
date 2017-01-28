@@ -14,6 +14,10 @@ const authRequired = require('./middlewares/authRequired');
 // Routes
 const auth = require('./routes/auth');
 const users = require('./routes/users');
+const postTypes = require('./routes/postTypes');
+const posts = require('./routes/posts');
+const commercialTypes = require('./routes/commercialTypes');
+const commercials = require('./routes/commercials');
 
 const app = express();
 
@@ -25,6 +29,10 @@ app.use(cookieParser());
 // Register the routes
 app.use('/auth', traceGenerator, auth);
 app.use('/users', traceGenerator, authRequired, users);
+app.use('/post-types', traceGenerator, authRequired, postTypes);
+app.use('/posts', traceGenerator, authRequired, posts);
+app.use('/commercial-types', traceGenerator, authRequired, commercialTypes);
+app.use('/commercials', traceGenerator, authRequired, commercials);
 
 // catch 404 and forward to error handler
 app.use(traceGenerator, (req, res, next) => {
