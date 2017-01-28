@@ -2,16 +2,15 @@
 module.exports = {
   up: function(queryInterface, Sequelize) {
     return queryInterface
-      .addColumn('Users', 'role', {
+      .addColumn('PostTypes', 'notification', {
         allowNull: false,
-        type: Sequelize.ENUM,
-        values: ['admin', 'consumer'], // TODO: Try to not hardcode this
-        defaultValue: 'consumer',
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       });
   },
 
   down: function(queryInterface, Sequelize) {
     return queryInterface
-      .removeColumn('Users', 'role');
+      .removeColumn('PostTypes', 'notification');
   },
 };
