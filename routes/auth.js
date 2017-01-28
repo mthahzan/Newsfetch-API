@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router(); // eslint-disable-line
 
 const tokenFactory = require('../services/tokenFactory');
+const errorFactory = require('../services/errorFactory');
 const cryptoService = require('../services/cryptoService');
 
 const models = require('../models');
@@ -12,20 +13,39 @@ const models = require('../models');
  */
 router.post('/', (req, res, next) => {
   const authName = req.body.authName;
-  const password = req.body.password;
+  const password = cryptoService.createHash(req.body.password);
   const findOptions = {
-    attributes: {
-      exclude: ['password'],
-    },
     where: {
       authName,
-      password: cryptoService.createHash(password),
     },
   };
 
   models
     .User
-    .findOrCreate(findOptions)
+    .findOne(findOptions)
+    .then((user) => {
+      let promise = null;
+
+      if (user) {
+        // There's a user with the current authName
+        // Check for password match or else say invalid credentials
+        if (user.password === password) {
+          promise = Promise.resolve(user);
+        } else {
+          // Wrong password
+          throw errorFactory.unauthorized(req, 'Invalid credentials');
+        }
+      } else {
+        // There's no user
+        // Create one
+        promise = User.create({
+          authName,
+          password,
+        });
+      }
+
+      return promise;
+    })
     .then((user) => {
       const tokenData = {
         user: {
@@ -35,7 +55,7 @@ router.post('/', (req, res, next) => {
       const token = tokenFactory.issueAuthToken(tokenData);
 
       res.send({
-        message: `Welcome ${req.body.username}`,
+        message: `Welcome ${user.name || user.authName}`,
         token: token,
       });
     })
