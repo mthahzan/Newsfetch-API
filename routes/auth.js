@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router(); // eslint-disable-line
 
 const tokenFactory = require('../services/tokenFactory');
+const cryptoService = require('../services/cryptoService');
 
 const models = require('../models');
 
@@ -13,9 +14,12 @@ router.post('/', (req, res, next) => {
   const authName = req.body.authName;
   const password = req.body.password;
   const findOptions = {
+    attributes: {
+      exclude: ['password'],
+    },
     where: {
       authName,
-      password,
+      password: cryptoService.createHash(password),
     },
   };
 

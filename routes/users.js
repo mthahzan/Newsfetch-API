@@ -6,9 +6,15 @@ const models = require('../models');
 
 /* GET users listing. */
 router.get('/', (req, res) => {
+  const options = {
+    attributes: {
+      exclude: ['password'],
+    },
+  };
+
   models
     .User
-    .findAll()
+    .findAll(options)
     .then((users) => {
       res.send(users);
     })

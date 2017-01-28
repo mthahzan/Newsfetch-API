@@ -1,5 +1,5 @@
 {
-  "name": "express-api",
+  "name": "newsfetch-api",
   "version": "0.0.1",
   "private": true,
   "scripts": {

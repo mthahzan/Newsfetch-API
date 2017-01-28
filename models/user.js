@@ -5,11 +5,11 @@ module.exports = function(sequelize, DataTypes) {
     authName: {
       allowNull: false,
       unique: true,
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
     },
     password: {
       allowNull: false,
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
     },
     appPreferences: DataTypes.JSON,
   }, {
