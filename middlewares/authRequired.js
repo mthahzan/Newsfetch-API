@@ -2,6 +2,8 @@
 const tokenFactory = require('../services/tokenFactory');
 const errorFactory = require('../services/errorFactory');
 
+const models = require('../models');
+
 /**
  * The middleware to authorize requests that should be protected by a login
  * @param  {object}   req  The request object provided by the Express router
@@ -15,10 +17,18 @@ const authRequired = (req, res, next) => {
     const token = authorizationHeader.split('Bearer: ').pop();
     const decoded = tokenFactory.verifyAuthToken(token);
 
-    // TODO: Check the user eligibility and inject useful information
-    req.decodedPayload = decoded;
+    models
+      .User
+      .findById(decoded.user.id)
+      .then((user) => {
+        let error = null;
+        if (!user) {
+          error = errorFactory.unauthorized(req);
+        }
 
-    next();
+        next(error);
+      })
+      .catch(next);
   } catch (e) {
     next(errorFactory.unauthorized(req));
   }

@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "newsfetch",
+    "password": "systemAdmin",
+    "database": "newsfetch",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "newsfetch",
+    "password": "systemAdmin",
+    "database": "newsfetch",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "newsfetch",
+    "password": "systemAdmin",
+    "database": "newsfetch",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
