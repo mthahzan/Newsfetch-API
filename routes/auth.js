@@ -55,8 +55,14 @@ router.post('/', (req, res, next) => {
       const token = tokenFactory.issueAuthToken(tokenData);
 
       res.send({
-        message: `Welcome ${user.name || user.authName}`,
-        token: token,
+        user: {
+          id: user.id,
+          name: user.name,
+          role: user.role,
+          authName: user.authName,
+          appPreferences: user.appPreferences,
+        },
+        authToken: token,
       });
     })
     .catch(next);

@@ -11,6 +11,12 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING,
     },
+    role: {
+      allowNull: false,
+      type: DataTypes.ENUM,
+      values: ['admin', 'consumer'], // TODO: Try to not hardcode this
+      defaultValue: 'consumer',
+    },
     appPreferences: DataTypes.JSON,
   }, {
     classMethods: {
