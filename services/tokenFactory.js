@@ -17,11 +17,12 @@ const issueAuthToken = (data) => {
 
 /**
  * Decodes and verifies the token. Throws an exception if verification fails.
- * @param  {String} token The token string to be verified
- * @return {object}       The decoded object
+ * @param  {String}  token            The token string to be verified
+ * @param  {Boolean} ignoreExpiration The token string to be verified
+ * @return {object}                   The decoded object
  */
-const verifyAuthToken = (token) => {
-  return jwt.verify(token, config.authToken.privateKey);
+const verifyAuthToken = (token, ignoreExpiration = false) => {
+  return jwt.verify(token, config.authToken.privateKey, {ignoreExpiration});
 };
 
 module.exports = {

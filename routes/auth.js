@@ -3,11 +3,28 @@ const Promise = require('bluebird');
 const express = require('express');
 const router = express.Router(); // eslint-disable-line
 
+const authRequired = require('../middlewares/authRequired');
+
 const tokenFactory = require('../services/tokenFactory');
 const errorFactory = require('../services/errorFactory');
 const cryptoService = require('../services/cryptoService');
 
 const models = require('../models');
+
+/**
+ * Create the auth token
+ * @param  {object} user The user object
+ * @return {string}      The created token string
+ */
+const createAuthToken = (user) => {
+  const tokenData = {
+    user: {
+      id: user.id,
+    },
+  };
+
+  return tokenFactory.issueAuthToken(tokenData);
+};
 
 /**
  * Registering the '/' route to accept both login and register
@@ -48,13 +65,6 @@ router.post('/', (req, res, next) => {
       return promise;
     })
     .then((user) => {
-      const tokenData = {
-        user: {
-          id: user.id,
-        },
-      };
-      const token = tokenFactory.issueAuthToken(tokenData);
-
       res.send({
         user: {
           id: user.id,
@@ -63,10 +73,28 @@ router.post('/', (req, res, next) => {
           authName: user.authName,
           appPreferences: user.appPreferences,
         },
-        authToken: token,
+        authToken: createAuthToken(user),
       });
     })
     .catch(next);
+});
+
+/**
+ * API endpoint to refresh the auth token
+ */
+router.get('/token', authRequired, (req, res) => {
+  const user = req.user;
+
+  res.send({
+    user: {
+      id: user.id,
+      name: user.name,
+      role: user.role,
+      authName: user.authName,
+      appPreferences: user.appPreferences,
+    },
+    authToken: createAuthToken(user),
+  });
 });
 
 module.exports = router;
