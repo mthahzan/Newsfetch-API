@@ -16,7 +16,7 @@ const authRequired = (req, res, next) => {
   try {
     const authorizationHeader = req.header('Authorization') || '';
     const token = authorizationHeader.split('Bearer: ').pop();
-    const ignoreExpiration = expirationIgnorePaths.indexOf(req.path) !== -1;
+    const ignoreExpiration = expirationIgnorePaths.indexOf(req.originalUrl) !== -1;
     const decoded = tokenFactory.verifyAuthToken(token, ignoreExpiration);
 
     models
@@ -27,6 +27,8 @@ const authRequired = (req, res, next) => {
         if (!user) {
           error = errorFactory.unauthorized(req);
         }
+
+        req.user = user;
 
         next(error);
       })

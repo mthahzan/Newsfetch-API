@@ -35,7 +35,7 @@ const createAuthToken = (user) => {
  */
 const prepareResponse = (user) => {
   const nowTime = Date.now();
-  const expiration = (nowTime + config.authToken.expiresIn) * 1000; // Add expiration time and convert to milliseconds
+  const expiration = nowTime + (config.authToken.expiresIn * 1000); // Add expiration time and convert to milliseconds
 
   return {
     expiration,
