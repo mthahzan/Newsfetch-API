@@ -3,6 +3,8 @@ const Promise = require('bluebird');
 const express = require('express');
 const router = express.Router(); // eslint-disable-line
 
+const config = require('../config');
+
 const authRequired = require('../middlewares/authRequired');
 
 const tokenFactory = require('../services/tokenFactory');
@@ -24,6 +26,28 @@ const createAuthToken = (user) => {
   };
 
   return tokenFactory.issueAuthToken(tokenData);
+};
+
+/**
+ * Creates the response object
+ * @param  {object} user User object
+ * @return {object}      Response object
+ */
+const prepareResponse = (user) => {
+  const nowTime = Date.now();
+  const expiration = (nowTime + config.authToken.expiresIn) * 1000; // Add expiration time and convert to milliseconds
+
+  return {
+    expiration,
+    user: {
+      id: user.id,
+      name: user.name,
+      role: user.role,
+      authName: user.authName,
+      appPreferences: user.appPreferences,
+    },
+    authToken: createAuthToken(user),
+  };
 };
 
 /**
@@ -65,16 +89,7 @@ router.post('/', (req, res, next) => {
       return promise;
     })
     .then((user) => {
-      res.send({
-        user: {
-          id: user.id,
-          name: user.name,
-          role: user.role,
-          authName: user.authName,
-          appPreferences: user.appPreferences,
-        },
-        authToken: createAuthToken(user),
-      });
+      res.send(prepareResponse(user));
     })
     .catch(next);
 });
@@ -82,19 +97,6 @@ router.post('/', (req, res, next) => {
 /**
  * API endpoint to refresh the auth token
  */
-router.get('/token', authRequired, (req, res) => {
-  const user = req.user;
-
-  res.send({
-    user: {
-      id: user.id,
-      name: user.name,
-      role: user.role,
-      authName: user.authName,
-      appPreferences: user.appPreferences,
-    },
-    authToken: createAuthToken(user),
-  });
-});
+router.get('/token', authRequired, (req, res) => res.send(prepareResponse(req.user)));
 
 module.exports = router;

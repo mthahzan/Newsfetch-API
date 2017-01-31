@@ -10,7 +10,7 @@ const errorFactory = require('./Services/errorFactory');
 // Middlewares
 const traceGenerator = require('./middlewares/traceGenerator');
 const authRequired = require('./middlewares/authRequired');
-const adminRequired = require('../middlewares/adminRequired');
+const adminRequired = require('./middlewares/adminRequired');
 
 // Routes
 const auth = require('./routes/auth');
