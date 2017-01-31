@@ -20,31 +20,34 @@ const users = [{
 const postTypes = [{
   id: 1,
   name: 'General',
+  notification: false,
   createdAt: new Date(),
   updatedAt: new Date(),
 }, {
   id: 2,
   name: 'Political',
+  notification: false,
   createdAt: new Date(),
   updatedAt: new Date(),
 }, {
   id: 3,
   name: 'Sports',
+  notification: false,
   createdAt: new Date(),
   updatedAt: new Date(),
 }, {
   id: 4,
   name: 'International',
+  notification: false,
   createdAt: new Date(),
   updatedAt: new Date(),
 }, {
   id: 5,
   name: 'Janaza',
+  notification: true,
   createdAt: new Date(),
   updatedAt: new Date(),
 }];
-
-// Unable to add boolean values to seed files. Fix it
 
 const commercialTypes = [{
   id: 1,

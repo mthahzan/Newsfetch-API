@@ -1,4 +1,5 @@
 'use strict';
+const Promise = require('bluebird');
 const express = require('express');
 const router = express.Router(); // eslint-disable-line
 
@@ -38,7 +39,7 @@ router.post('/', (req, res, next) => {
       } else {
         // There's no user
         // Create one
-        promise = User.create({
+        promise = models.User.create({
           authName,
           password,
         });
