@@ -10,6 +10,7 @@ const errorFactory = require('./Services/errorFactory');
 // Middlewares
 const traceGenerator = require('./middlewares/traceGenerator');
 const authRequired = require('./middlewares/authRequired');
+const adminRequired = require('../middlewares/adminRequired');
 
 // Routes
 const auth = require('./routes/auth');
@@ -28,7 +29,7 @@ app.use(cookieParser());
 
 // Register the routes
 app.use('/auth', traceGenerator, auth);
-app.use('/users', traceGenerator, authRequired, users);
+app.use('/users', traceGenerator, authRequired, adminRequired, users);
 app.use('/post-types', traceGenerator, authRequired, postTypes);
 app.use('/posts', traceGenerator, authRequired, posts);
 app.use('/commercial-types', traceGenerator, authRequired, commercialTypes);

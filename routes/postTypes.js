@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
 /**
  * GET PostType by ID
  */
-router.get(':postTypeId', (req, res, next) => {
+router.get('/:postTypeId', (req, res, next) => {
   models
     .PostType
     .findOne({

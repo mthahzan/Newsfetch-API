@@ -24,7 +24,7 @@ router.get('/', (req, res, next) => {
  */
 router.get('/:postId', (req, res, next) => {
   models
-    .PostType
+    .Post
     .findOne({
       where: {
         id: req.param.postId,
