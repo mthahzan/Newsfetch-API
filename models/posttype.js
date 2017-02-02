@@ -14,6 +14,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    imageURL: DataTypes.STRING,
   }, {
     classMethods: {
       associate: function(models) {
