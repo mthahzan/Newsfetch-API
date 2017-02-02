@@ -17,8 +17,6 @@ router.get('/', (req, res, next) => {
     };
   }
 
-  console.log('Where', where);
-
   models
     .PostType
     .findAll({
