@@ -30,6 +30,13 @@ router.get('/', (req, res, next) => {
  * GET PostType by ID
  */
 router.get('/:postTypeId', (req, res, next) => {
+  const postWhereClause = {};
+  const updatedAt = queryParser.parseLastUpdate(req);
+
+  if (updatedAt) {
+    postWhereClause.updatedAt = updatedAt;
+  }
+
   models
     .PostType
     .findOne({
@@ -37,28 +44,11 @@ router.get('/:postTypeId', (req, res, next) => {
         id: req.params.postTypeId,
       },
       include: [{
-        model: models.Post, where: {
-          active: true,
-        },
+        model: models.Post, where: postWhereClause,
       }],
     })
     .then((postType) => res.send(postType))
     .catch(next);
 });
-
-/**
- * GET Posts of PostType
- */
-// router.get('/:postTypeId/posts', (req, res, next) => {
-//   models
-//     .Post
-//     .findAll({
-//       where: {
-//         PostTypeId: req.params.postTypeId,
-//       },
-//     })
-//     .then((posts) => res.send({results: posts}))
-//     .catch(next);
-// });
 
 module.exports = router;

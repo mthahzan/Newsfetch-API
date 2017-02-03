@@ -11,7 +11,7 @@ const parseLastUpdate = (req) => {
   // See if the user sent us the lastUpdate date so we can send back only the updates
   if (req.query.lastUpdate && !isNaN(req.query.lastUpdate)) {
     query = {
-      $gt: new Date(parseInt(req.query.lastUpdate)),
+      '$gt': new Date(parseInt(req.query.lastUpdate)),
     };
   }
 

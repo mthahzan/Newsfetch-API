@@ -33,7 +33,18 @@ router.get('/', (req, res, next) => {
 /**
  * GET CommercialType by ID
  */
-router.get(':commercialTypeId', (req, res, next) => {
+router.get('/:commercialTypeId', (req, res, next) => {
+  const commercialWhereClause = {
+    expiration: {
+      '$gt': new Date(),
+    },
+  };
+  const updatedAt = queryParser.parseLastUpdate(req);
+
+  if (updatedAt) {
+    commercialWhereClause.updatedAt = updatedAt;
+  }
+
   models
     .CommercialType
     .findOne({
@@ -41,9 +52,7 @@ router.get(':commercialTypeId', (req, res, next) => {
         id: req.params.commercialTypeId,
       },
       include: [{
-        model: models.Commercial, where: {
-          active: true,
-        },
+        model: models.Commercial, where: commercialWhereClause,
       }],
     })
     .then((commercialType) => {
