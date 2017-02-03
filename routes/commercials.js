@@ -44,7 +44,7 @@ router.get(':commercialId', (req, res, next) => {
     .Commercial
     .findOne({
       where: {
-        id: req.param.commercialId,
+        id: req.params.commercialId,
       },
     })
     .then((commercial) => {
