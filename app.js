@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 // Services
-const errorFactory = require('./Services/errorFactory');
+const errorFactory = require('./services/errorFactory');
 
 // Middlewares
 const traceGenerator = require('./middlewares/traceGenerator');
